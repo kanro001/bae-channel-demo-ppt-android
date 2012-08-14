@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF"
+	 >
+	<RelativeLayout 
+	    android:id="@+id/btn_tools"
+	    android:layout_alignParentTop="true"
+	   	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+	    >
+        <Button 
+        	android:id= "@+id/btn_page_prev"
+        	android:layout_width="80dp"
+        	android:layout_height="wrap_content"
+        	android:text="@string/pervious"
+        	android:layout_alignParentLeft="true"
+        />
+        
+        <EditText
+        	android:id= "@+id/editpagenum"
+        	android:layout_width="50dp"
+        	android:layout_height="wrap_content"
+        	android:text="1"
+        	android:layout_toRightOf="@+id/btn_page_prev"
+        	android:gravity="center"
+        />
+        
+        <Button 
+        	android:id= "@+id/btn_page_jump"
+        	android:layout_width="80dp"
+        	android:layout_height="wrap_content"
+        	android:text="@string/jump"
+        	android:layout_toRightOf="@+id/editpagenum"
+        	android:gravity="center"
+        />
+        
+    	<Button 
+        	android:id= "@+id/btn_page_next"
+        	android:layout_width="80dp"
+        	android:layout_height="wrap_content"
+        	android:text="@string/next"
+        	android:layout_alignParentRight="true"
+        />
+    
+	</RelativeLayout>
+
+    
+    <RelativeLayout
+        	android:layout_below="@+id/btn_tools"
+        	android:layout_above="@+id/btn_tools_jump"
+        	android:layout_width="match_parent" 
+        	android:layout_height="match_parent"       	
+        >
+
+        <TextView
+            android:id="@+id/pagenumshow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+            android:textColor="#000000"
+            android:textSize="14pt" />
+        
+        <TextView            
+            android:id= "@+id/btnpagetotal"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:textSize="14pt"
+        	android:textColor="#000000"
+        	android:layout_centerInParent="true"
+            android:layout_below="@+id/pagenumshow"
+            />
+                
+    </RelativeLayout> 
+    
+   	<RelativeLayout 
+	    android:id="@+id/btn_tools_jump"
+	    android:layout_alignParentBottom="true"
+	   	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_centerHorizontal="true"
+	    >
+    	<Button 
+        	android:id= "@+id/btnback"
+        	android:layout_width="80dp"
+        	android:layout_height="wrap_content"
+        	android:text="@string/back"
+        	android:layout_alignParentLeft="true"
+        />
+
+    	<Button 
+        	android:id= "@+id/btn_slide_control"
+        	android:layout_width="80dp"
+        	android:layout_height="wrap_content"
+        	android:text="@string/slide_control"
+        	android:layout_alignParentRight="true"
+        />
+
+    
+	</RelativeLayout>
+
+</RelativeLayout>

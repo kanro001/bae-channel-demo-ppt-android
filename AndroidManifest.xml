@@ -34,7 +34,7 @@
         </activity>
         
         <activity 
-            android:name=".ControlActivity"
+            android:name=".PageControlActivity"
             android:label="@string/PPTlist"
             >
             
@@ -43,54 +43,17 @@
         <activity 
             android:name=".LoginActivity"
             android:label="@string/login"
-            ></activity>
-        
-        <!-- push service client -->
-        <receiver android:name=".PushMessageReceiver">
-            <intent-filter>
-                <!-- 接收push消息 -->
-                <action android:name="com.baidu.android.pushservice.action.MESSAGE" />
-                <!-- 接收bind,unbind,fetch,delete等反馈消息 -->
-                <action android:name="com.baidu.android.pushservice.action.RECEIVE" />
-            </intent-filter>
-        </receiver>
-        
-        <!-- push service -->
-        <receiver android:name="com.baidu.android.pushservice.PushServiceReceiver"
-            android:process=":pushservice_v1">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name="com.baidu.android.pushservice.RegistratonReceiver"
-            android:process=":pushservice_v1">
-            <intent-filter>
-                <action android:name="com.baidu.android.pushservice.action.METHOD" />
-                <action android:name="com.baidu.android.pushservice.action.BIND_SYNC" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
-                <data android:scheme="package" />
-            </intent-filter>                   
-        </receiver>        
-        
-        <service android:name="com.baidu.android.pushservice.PushService"
-            android:process=":pushservice_v1"/>
-        
-        <activity android:name="com.baidu.android.pushservice.PushTestActivity"
-                android:enabled="false"
-                android:label="PushTest"
-                android:taskAffinity=":pushservice_test"
-                android:process=":pushservice_test"
-                 >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            >
+            
         </activity>
-        <!-- push service end -->
+        
+        <activity 
+            android:name=".SlideControlActivity"
+            android:label="@string/slide_control"
+            >
+            
+        </activity>
+        
         
     </application>
 

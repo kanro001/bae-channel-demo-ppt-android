@@ -3,26 +3,18 @@ package com.baidu.channelapi;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.baidu.channelapi.ChannelActionInfo.ChannelActionResponse;
-import com.baidu.channelapi.ChannelActionInfo.PPTListInfoResponse;
 
 class BaiduChannelActionBase {
 	//
@@ -39,50 +31,6 @@ class BaiduChannelActionBase {
 		return mbAccessToken;
 	}
 
-	//
-	// send HTTP Request
-	//
-	protected ChannelRawHTTPResponse sendHttpRequest(HttpRequestBase request){
-		// response
-		ChannelRawHTTPResponse ret = new ChannelRawHTTPResponse();
-
-		if(null != request){
-			
-			// create client
-			HttpClient client = HttpClientFactory.makeHttpClient();
-
-			if(null != client){
-
-				for (int retries = 0; ret.response == null && retries < Max_Retries; ++retries) {
-					/*
-					 * The try/catch is a workaround for a bug in the HttpClient libraries. It should be returning null
-					 * instead when an error occurs. Fixed in HttpClient 4.1, but we're stuck with this for now. See:
-					 * http://code.google.com/p/android/issues/detail?id=5255
-					 */
-					try {
-						ret.response = client.execute(request);
-					} catch (NullPointerException e) {
-						ret.message = e.getMessage();
-					} catch (ClientProtocolException e) {
-						ret.message = e.getMessage();
-					} catch (IOException e) {
-						ret.message = e.getMessage();
-					}
-					
-					if(null == ret.response){
-						try {
-							Thread.sleep(1000 * (retries + 1));
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							ret.message = e.getMessage();
-						}
-					}
-				}
-			}
-		}
-
-		return ret;
-	}
 	
 	//
 	// build url
@@ -111,6 +59,57 @@ class BaiduChannelActionBase {
 		return ret;
 	}
 	
+	
+	protected String parsePageNum(String json){
+		
+		ChannelActionInfo.PPTPageNumResponse ret = new ChannelActionInfo.PPTPageNumResponse();
+		
+		try {
+			
+			JSONObject pageNum;
+			
+			try {
+				
+				pageNum = new JSONObject(json);
+			
+			if(null != pageNum){
+				
+				if(pageNum.has(Key_ErrorCode)){ // get error, failed to upload piece
+					ret.error_code = pageNum.getInt(Key_ErrorCode);
+
+					if(pageNum.has(Key_ErrorMessage)){
+						ret.message = pageNum.getString(Key_ErrorMessage);
+					}
+				}
+			 else{ // success, we need to parse the parameters
+					ret.error_code = 0;
+
+					if(pageNum.has(Key_Action_Responese)){
+						
+						JSONObject pageCount = pageNum.getJSONObject(Key_Action_Responese); 
+						
+						if(pageCount.has(Key_PageNum)){
+							
+							ret.pageNum = pageCount.getString(Key_PageNum);
+						}
+					}
+			 	}	
+			 }
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			ret.message = e.getMessage();
+		}
+		
+		return ret.pageNum;
+	}
+	
+		
 	/*
 	 * parse the response for ppt infomation
 	 */
@@ -135,120 +134,6 @@ class BaiduChannelActionBase {
 		return ret;
 	}
 	
-	
-	protected ChannelActionInfo.ChannelActionResponse parseActionInfo(HttpResponse response){
-		
-		ChannelActionInfo.ChannelActionResponse ret = new ChannelActionInfo.ChannelActionResponse();
-		
-		try {
-			HttpEntity resEntity = response.getEntity();
-			String json = EntityUtils.toString(resEntity);
-			
-			ret = parseActionInfoByJson(json);
-
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			ret.message = e.getMessage();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			ret.message = e.getMessage();
-		}
-		
-		return ret;
-	}
-	
-	
-	protected ChannelActionInfo.ChannelActionResponse parseActionInfoByJson(String json){
-		ChannelActionInfo.ChannelActionResponse ret = new ChannelActionInfo.ChannelActionResponse();
-		if(null != json && json.length() > 0){
-			try {
-				JSONObject jo = new JSONObject(json);
-				ret = parseActionInfoByJSONObject(jo);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				ret.message = e.getMessage();
-			}
-		}
-
-		return ret;
-	}
-	
-	
-	 protected ChannelActionInfo.ChannelActionResponse parseActionInfoByJSONObject(JSONObject jo){
-		 ChannelActionInfo.ChannelActionResponse ret = new ChannelActionInfo.ChannelActionResponse();
-			try {
-				 if(null != jo){
-					if(jo.has(Key_ErrorCode)){ // get error, failed to upload piece
-						ret.error_code = jo.getInt(Key_ErrorCode);
-
-						if(jo.has(Key_ErrorMessage)){
-							ret.message = jo.getString(Key_ErrorMessage);
-						}
-					}
-				 else{ // success, we need to parse the parameters
-						ret.error_code = 0;
-
-						if(jo.has(Key_PPTID)){
-							ret.pptId = jo.getString(Key_PPTID);
-						}
-						
-						if(jo.has(Key_CPage)){
-							ret.curPage = jo.getInt(Key_CPage);
-						}
-
-						if(jo.has(Key_TPage)){
-							ret.totalPage = jo.getInt(Key_TPage);
-						}
-
-					}
-				}
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				ret.message = e.getMessage();
-			}
-		 return ret;
-	 }
-	 
-	 
-	 protected ChannelActionResponse parseActionResponse(HttpResponse response){
-		 ChannelActionInfo.ChannelActionResponse ret = new ChannelActionInfo.ChannelActionResponse();
-			if(null != response){
-				try {
-					HttpEntity resEntity = response.getEntity();
-					String json = EntityUtils.toString(resEntity);
-
-					JSONObject jo = new JSONObject(json);
-
-					if(null != jo){
-						if(jo.has(Key_ErrorCode)){ // get error, failed to upload piece
-							ret.error_code = jo.getInt(Key_ErrorCode);
-
-							if(jo.has(Key_ErrorMessage)){
-								ret.message = jo.getString(Key_ErrorMessage);
-							}
-						}else{
-							ret.error_code = 0;
-							if(jo.has(Key_Action_Responese)){
-								JSONArray list = jo.getJSONArray(Key_Action_Responese);
-								ChannelActionInfo.ChannelActionResponse info = parseActionInfoByJSONObject(list.getJSONObject(0));
-							}
-						}
-					}
-
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					ret.message = e.getMessage();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					ret.message = e.getMessage();
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					ret.message = e.getMessage();
-				}
-			}
-			
-			return ret;
-		}
 	
 	
 	/*
@@ -349,17 +234,67 @@ class BaiduChannelActionBase {
 		return ret;
 	}
 	
+	protected ChannelActionInfo.ChannelActionResponse parseActionInfo(String json){
+		
+		ChannelActionInfo.ChannelActionResponse ret = new ChannelActionInfo.ChannelActionResponse();
+		
+		if(null != json){
+			try {
+
+				JSONObject jo = new JSONObject(json);
+
+				if(null != jo){
+					if(jo.has(Key_ErrorCode)){ // get error, failed to upload piece
+						ret.error_code = jo.getInt(Key_ErrorCode);
+
+						if(jo.has(Key_ErrorMessage)){
+							ret.message = jo.getString(Key_ErrorMessage);
+						}
+					}else{
+						ret.error_code = 0;
+						
+						if(jo.has(Key_Action_Responese)){
+							
+							JSONObject response = jo.getJSONObject(Key_Action_Responese);
+							
+							if(response.has(Key_PPTID)){
+								ret.pptId = response.getString(Key_PPTID);
+							}
+							
+							if(response.has(Key_CPage)){
+								ret.curPage = response.getInt(Key_CPage);
+							}
+
+							if(response.has(Key_TPage)){
+								ret.totalPage = response.getInt(Key_TPage);
+							}
+							
+						}
+					}
+				}
+			}catch (ParseException e) {
+				// TODO Auto-generated catch block
+				ret.message = e.getMessage();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				ret.message = e.getMessage();
+			}
+			
+		}
+		
+		
+		return ret;
+	}
+	
 	
 	/*
 	 * parse list response
 	 */
-	protected ChannelActionInfo.PPTListInfoResponse parseListResponse(HttpResponse response){
+	protected ChannelActionInfo.PPTListInfoResponse parseListResponse(String json){
 		ChannelActionInfo.PPTListInfoResponse ret = new ChannelActionInfo.PPTListInfoResponse();
 		
-		if(null != response){
+		if(null != json){
 			try {
-				HttpEntity resEntity = response.getEntity();
-				String json = EntityUtils.toString(resEntity);
 
 				JSONObject jo = new JSONObject(json);
 
@@ -374,7 +309,9 @@ class BaiduChannelActionBase {
 						ret.error_code = 0;
 						if(jo.has(Key_Action_Responese)){
 							JSONObject Responslist = jo.getJSONObject(Key_Action_Responese);
-							
+							if(Responslist.has("total_num")){
+								ret.pptNum = Integer.parseInt(Responslist.getString("total_num"));
+							}
 							if(Responslist.has(Key_Files_List)){							
 							
 								JSONArray list = Responslist.getJSONArray(Key_Files_List);
@@ -392,9 +329,6 @@ class BaiduChannelActionBase {
 				}
 
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				ret.message = e.getMessage();
-			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				ret.message = e.getMessage();
 			} catch (JSONException e) {
@@ -418,7 +352,7 @@ class BaiduChannelActionBase {
 	}
 	
 	// the request url
-	final static String ChannelRequestUrl = "";
+	final static String ChannelRequestUrl = "http://innerslide.offline.bae.baidu.com/rest/2.0/slideshow/slideshow";
 	
 	// the key of method
 	final static String Key_Method = "method";
@@ -449,6 +383,8 @@ class BaiduChannelActionBase {
 	final static String Key_CPage = "cur_page";
 	
 	final static String Key_TPage = "total";
+	
+	final static String Key_PageNum = "page_num";
 	
 	
 	// max retries times

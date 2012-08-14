@@ -14,7 +14,6 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 /**
  * 登录。
@@ -98,11 +97,11 @@ public class LoginActivity extends Activity {
                     // 保存
                     writeAccessToken(LoginActivity.this, accessToken);
 
-                    Toast.makeText(LoginActivity.this, "get access token success", Toast.LENGTH_SHORT).show();
-
+//                    Toast.makeText(LoginActivity.this, "get access token success", Toast.LENGTH_SHORT).show();
+                    
                     // 通知登录成功
-                    Intent intent = new Intent(ControlActivity.ACTION_LOGIN);
-                    intent.setClass(LoginActivity.this, ControlActivity.class);
+                    Intent intent = new Intent();
+                    intent.setClass(LoginActivity.this, PPTListActivity.class);
                     startActivity(intent);
 
                     finish();
@@ -164,12 +163,12 @@ public class LoginActivity extends Activity {
      * @param context Context
      * @return 未加密的AccessToken
      */
-    public static String getAccessToken(Context context) {
-        String accessToken = null;
+    public static void getAccessToken(Context context) {
+//        String accessToken = null;
         SharedPreferences pref = context.getSharedPreferences(SHARED_PRE_FILE_NAME, Context.MODE_PRIVATE);
-        accessToken = pref.getString(KEY_ACCESS_TOKEN, "");
+        BaseInfo.access_token = pref.getString(KEY_ACCESS_TOKEN, "");
 
-        return accessToken;
+//        return accessToken;
     }
 }
 

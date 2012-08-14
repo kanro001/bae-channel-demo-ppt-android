@@ -13,21 +13,23 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-public class ChannelGetPageNum extends BaiduChannelActionBase{
+import com.baidu.channelapi.ChannelActionInfo.ChannelActionResponse;
+
+public class ChannelJump extends BaiduChannelActionBase{
 	
 	//
-	//getpagenum
-	// @ by:  time   name   size
-	// @ order : asc dsc
+	// 
+	//next
 	//
-	public String getPageNum(String id){
-		
-			String ret = null;
+	public int jump(String id, String dest_page){
+		    
+			ChannelActionResponse ret = new ChannelActionResponse();
 
 			ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair(BaiduChannelActionBase.Key_Method, Value_Method));
 			params.add(new BasicNameValuePair(BaiduChannelActionBase.Key_AccessToken, getAccessToken()));
 			params.add(new BasicNameValuePair(Key_slide_id,id ));
+			params.add(new BasicNameValuePair(Key_dest_page, dest_page));
 
 			// build url
 			String url = BaiduChannelActionBase.ChannelRequestUrl + "?" +buildParams(params);
@@ -48,7 +50,7 @@ public class ChannelGetPageNum extends BaiduChannelActionBase{
 		        	
 					String strResult = EntityUtils.toString(response.getEntity());
 					
-					ret = parsePageNum(strResult);
+					ret = parseActionInfo(strResult);
 		        	
 		        }
 		        		        
@@ -60,14 +62,16 @@ public class ChannelGetPageNum extends BaiduChannelActionBase{
 				e.printStackTrace();
 			}
 
-		return ret;
+		return ret.curPage;
 	}
 	
 	// value of method
-	private final static String Value_Method = "get_page_num";
+	private final static String Value_Method = "jump";
 	
 	// key 
 	private final static String Key_slide_id = "slide_id";
+	
+	private final static String Key_dest_page = "dest_page";
 	
 
 }

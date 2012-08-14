@@ -10,5 +10,8 @@
     <string name="refresh">列表刷新成功！</string>
     <string name="next">下一页</string>
     <string name="pervious">上一页</string>
-
+    <string name="back">返回</string>
+    <string name="slide_control">滑动模式</string>
+    <string name="button_control">上一页</string>
+	<string name="jump">跳到</string>
 </resources>

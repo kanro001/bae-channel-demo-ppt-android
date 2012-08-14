@@ -1,7 +1,5 @@
 package com.baidu.channelapi;
 
-import java.util.ArrayList;
-import java.util.List;
 
 //
 // the HTTP request in this class is handled synchronously
@@ -12,42 +10,62 @@ public class BaiduChannelAPI {
 	//
 	// list info
 	//
-	public ChannelActionInfo.PPTListInfoResponse list(){
+	public ChannelActionInfo.PPTListInfoResponse get_list(String page,String limit){
 		
-		ChannelActionInfo.PPTListInfoResponse ret = new ChannelActionInfo.PPTListInfoResponse();
+		ChannelList list = new ChannelList();
 		
-		
-		return ret;
+		list.getAccessToken();
+				
+		return list.get_list(page, limit);
 	}
 	
 	//get pageNum api
-	public int  getPageNum(){
-		int pageNum = 0 ;
+	public int  getPageNum(String pptID){
 		
-		return pageNum;
+		ChannelGetPageNum pageNum = new ChannelGetPageNum();
+		
+		pageNum.getAccessToken();
+						
+		return Integer.parseInt(pageNum.getPageNum(pptID));
 	}
 	
 	//pervious api
-	public ChannelActionInfo.ChannelActionResponse pervious(){
-		ChannelActionInfo.ChannelActionResponse ret = new ChannelActionInfo.ChannelActionResponse();
+	public int pervious(String pptID,String curPageNum){
 		
+		ChannelPervious perv = new ChannelPervious();
 		
+		perv.getAccessToken();
 		
-		return ret;
+		return perv.perviuous(pptID, curPageNum);
 	}
 	
 	//next api
-	public ChannelActionInfo.ChannelActionResponse next(){
-		ChannelActionInfo.ChannelActionResponse ret = new ChannelActionInfo.ChannelActionResponse();
+	public int next(String pptID,String curPageNum){
+		ChannelNext next = new ChannelNext();
 		
-		return ret;		
+		next.getAccessToken();
+		
+		return next.next(pptID, curPageNum);		
+	}
+	
+	//jump api
+	public int jump(String pptID,String dest_page){
+		
+		ChannelNext jump = new ChannelNext();
+		
+		jump.getAccessToken();
+		
+		return jump.next(pptID, dest_page);		
 	}
 	
 	//rest api
-	public ChannelActionInfo.ChannelActionResponse reset(){
-		ChannelActionInfo.ChannelActionResponse ret = new ChannelActionInfo.ChannelActionResponse();
+	public ChannelActionInfo.ChannelActionResponse reset(String pptID){
 		
-		return ret;
+		ChannelReset pptReset = new ChannelReset();
+		
+		pptReset.getAccessToken();
+		
+		return pptReset.reset(pptID);
 		
 	}
 	

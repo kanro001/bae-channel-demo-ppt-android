@@ -84,4 +84,16 @@ public final class ChannelActionInfo {
 	}
 	
 	
+	public static class PPTPageNumResponse{
+		
+		//0 means success
+		public int error_code = -1;
+		
+		// status message if failed
+		public String message = null;
+		
+		public String pageNum = null;
+	}
+	
+	
 }
