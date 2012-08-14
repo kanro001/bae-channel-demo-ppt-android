@@ -2,7 +2,7 @@
 <resources>
 
     <string name="hello">Hello World, ChannelDemoActivity!</string>
-    <string name="app_name">ChannelDemo</string>
+    <string name="app_name">slidectrl</string>
     <string name="login">与百度连接</string>
     <string name="PPTlist">PPT列表</string>
     <string name="fail">失败！！</string>

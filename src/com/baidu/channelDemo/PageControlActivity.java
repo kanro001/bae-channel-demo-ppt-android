@@ -14,15 +14,15 @@ import android.widget.Toast;
 
 public class PageControlActivity extends Activity{
 
-	private TextView pagetotal = null;	
-	private TextView cur_page = null;
-	private EditText jump_page_num = null;
+	private TextView pageTotal = null;	
+	private TextView curPage = null;
+	private EditText jumpPageNum = null;
 	
-	private Button btn_perv = null;
-	private Button btn_next = null;
-	private Button btn_jump = null;
-	private Button btn_slide = null;	
-	private Button btn_back = null;
+	private Button btnPerv = null;
+	private Button btnNext = null;
+	private Button btnJump = null;
+	private Button btnSlide = null;	
+	private Button btnBack = null;
 	private int pageNum = 0;
 	
 	public Handler uiThreadHandler = new Handler(); 
@@ -32,49 +32,49 @@ public class PageControlActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pagecontrol);
         
-        get_pageNum();
+        
+        getPageNum();
         
         pptReset();
-
         
-        pagetotal = (TextView)findViewById(R.id.btnpagetotal);
-        jump_page_num = (EditText)findViewById(R.id.editpagenum);
-        cur_page = (TextView)findViewById(R.id.pagenumshow);
-        btn_perv = (Button)findViewById(R.id.btn_page_prev);
-        btn_next = (Button)findViewById(R.id.btn_page_next);
-        btn_jump = (Button)findViewById(R.id.btn_page_jump);
-        btn_back = (Button)findViewById(R.id.btnback);
-        btn_slide = (Button)findViewById(R.id.btn_slide_control);
+        pageTotal = (TextView)findViewById(R.id.btnpagetotal);
+        jumpPageNum = (EditText)findViewById(R.id.editpagenum);
+        curPage = (TextView)findViewById(R.id.pagenumshow);
+        btnPerv = (Button)findViewById(R.id.btn_page_prev);
+        btnNext = (Button)findViewById(R.id.btn_page_next);
+        btnJump = (Button)findViewById(R.id.btn_page_jump);
+        btnBack = (Button)findViewById(R.id.btnback);
+        btnSlide = (Button)findViewById(R.id.btn_slide_control);
         
         
-        btn_perv.setOnClickListener(new Button.OnClickListener(){
+        btnPerv.setOnClickListener(new Button.OnClickListener(){
         	
             public void onClick(View v) {
             	
-            	perv();
+            	pagePerv();
             }
         });
         
-        btn_next.setOnClickListener(new Button.OnClickListener(){
+        btnNext.setOnClickListener(new Button.OnClickListener(){
 
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				
-				next();
+				pageNext();
 			}
         	       	
         });
         
-        btn_jump.setOnClickListener(new Button.OnClickListener(){
+        btnJump.setOnClickListener(new Button.OnClickListener(){
         	
             public void onClick(View v) {
             	
-            	jump();
+            	pageJump();
             }
         });
         
         
-        btn_slide.setOnClickListener(new Button.OnClickListener(){
+        btnSlide.setOnClickListener(new Button.OnClickListener(){
         	
             public void onClick(View v) {
             	
@@ -84,7 +84,7 @@ public class PageControlActivity extends Activity{
             }
         });
         
-        btn_back.setOnClickListener(new Button.OnClickListener(){
+        btnBack.setOnClickListener(new Button.OnClickListener(){
         	
             public void onClick(View v) {
             	
@@ -103,17 +103,17 @@ public class PageControlActivity extends Activity{
 		// TODO Auto-generated method stub
 		super.onRestart();
 		
-		jump_page_num.setText(String.valueOf(BaseInfo.currentPage+1));
-		cur_page.setText("第"+ (BaseInfo.currentPage+1) +"页");	
+		jumpPageNum.setText(String.valueOf(BaseInfo.currentPage+1));
+		curPage.setText("第"+ (BaseInfo.currentPage+1) +"页");	
 		
 		if((BaseInfo.currentPage+1)>1 &&(BaseInfo.currentPage+1)<BaseInfo.pageNum){
 			
-			btn_next.setEnabled(true);
-			btn_perv.setEnabled(true);
+			btnNext.setEnabled(true);
+			btnPerv.setEnabled(true);
 		}
 	}
 	
-	public void get_pageNum(){
+	public void getPageNum(){
 		
 		Thread workThread = new Thread(new Runnable(){
    			
@@ -129,7 +129,7 @@ public class PageControlActivity extends Activity{
 	    			
 	    			public void run(){
 	    				
-	    				 pagetotal.setText("共"+BaseInfo.pageNum+"页");
+	    				 pageTotal.setText("共"+BaseInfo.pageNum+"页");
 	    				
 	    			}
 							
@@ -160,9 +160,9 @@ public class PageControlActivity extends Activity{
 	    			
 	    			public void run(){
 	    				
-	    				 btn_perv.setEnabled(false);
+	    				 btnPerv.setEnabled(false);
 	    				 
-	    				 cur_page.setText("第"+ pageNum +"页");
+	    				 curPage.setText("第"+ pageNum +"页");
 	    				
 	    			}
 							
@@ -175,7 +175,7 @@ public class PageControlActivity extends Activity{
 		
 	}
 	
-	public void perv(){
+	public void pagePerv(){
 		
 		Thread workThread = new Thread(new Runnable(){
    			
@@ -195,14 +195,14 @@ public class PageControlActivity extends Activity{
 	    				
 	    				if(pageNum == 1){
 	    					
-	    					btn_perv.setEnabled(false);
+	    					btnPerv.setEnabled(false);
 	    				}
 	    				
-	    				btn_next.setEnabled(true);
+	    				btnNext.setEnabled(true);
 	    				
-	    				jump_page_num.setText(String.valueOf(pageNum));
+	    				jumpPageNum.setText(String.valueOf(pageNum));
 	    				 
-	    				cur_page.setText("第"+pageNum+"页");
+	    				curPage.setText("第"+pageNum+"页");
 	    				
 	    			}
 							
@@ -214,7 +214,7 @@ public class PageControlActivity extends Activity{
 		
 	}
 	
-	public void jump(){
+	public void pageJump(){
 		
 		Thread workThread = new Thread(new Runnable(){
    			
@@ -224,7 +224,7 @@ public class PageControlActivity extends Activity{
 				
 				jump.setAccessToken(BaseInfo.access_token);
 								
-				int num = Integer.parseInt(jump_page_num.getText().toString())-1;
+				int num = Integer.parseInt(jumpPageNum.getText().toString())-1;
 									
 				BaseInfo.currentPage  = jump.jump(BaseInfo.pptId, String.valueOf(num)) - 1;	
 					
@@ -236,21 +236,21 @@ public class PageControlActivity extends Activity{
 		    			
 		    				if(pageNum == 1){
 		    					
-		    					btn_perv.setEnabled(false);		    					
+		    					btnPerv.setEnabled(false);		    					
 		    				}else{
 		    					
 		    					if(pageNum == BaseInfo.pageNum){
 		    					
-		    						btn_next.setEnabled(false);
+		    						btnNext.setEnabled(false);
 		    					}else{
 		    						
-		    						btn_perv.setEnabled(true);
-		    						btn_next.setEnabled(true);
+		    						btnPerv.setEnabled(true);
+		    						btnNext.setEnabled(true);
 		    					}
 		    				}
 
-		    				jump_page_num.setText(String.valueOf(pageNum));
-		    				 cur_page.setText("第"+ pageNum +"页");		    				
+		    				jumpPageNum.setText(String.valueOf(pageNum));
+		    				curPage.setText("第"+ pageNum +"页");		    				
 		    			}
 								
 		    		});
@@ -261,7 +261,7 @@ public class PageControlActivity extends Activity{
 		
 	}
 	
-	public void next(){
+	public void pageNext(){
 		
 		Thread workThread = new Thread(new Runnable(){
    			
@@ -279,15 +279,15 @@ public class PageControlActivity extends Activity{
 	    			
 	    			public void run(){
 	    				
-	    				btn_perv.setEnabled(true);
+	    				btnPerv.setEnabled(true);
 	    				
 	    				if(pageNum == BaseInfo.pageNum){
 	    					
-	    					btn_next.setEnabled(false);
+	    					btnNext.setEnabled(false);
 	    				}
 	    				
-	    				jump_page_num.setText(String.valueOf(pageNum)); 
-	    				cur_page.setText("第"+ pageNum +"页");	    				
+	    				jumpPageNum.setText(String.valueOf(pageNum)); 
+	    				curPage.setText("第"+ pageNum +"页");	    				
 	    			}
 							
 	    		});

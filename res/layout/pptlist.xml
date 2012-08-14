@@ -5,14 +5,42 @@
     android:background="#FFFFFF"
 	>
 	
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:id="@+id/list_tools"
+        >
+        
+        <Button
+            android:id="@+id/list_perv"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_alignParentLeft="true"
+            android:text = "@string/pervious"
+            />
+            
+        <Button
+            android:id="@+id/list_next"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_alignParentRight="true"
+            android:text = "@string/next"
+            />            
+        
+    </RelativeLayout>
+        
+	
     <ListView
         android:id="@id/android:list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/list_tools"
         android:drawSelectorOnTop="false"
         android:scrollbars="vertical" >
     </ListView>
+    
+
  
 </RelativeLayout>

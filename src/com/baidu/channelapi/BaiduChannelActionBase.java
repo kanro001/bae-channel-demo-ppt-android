@@ -64,24 +64,25 @@ class BaiduChannelActionBase {
 		
 		ChannelActionInfo.PPTPageNumResponse ret = new ChannelActionInfo.PPTPageNumResponse();
 		
+			
+		JSONObject pageNum;
+			
 		try {
-			
-			JSONObject pageNum;
-			
-			try {
 				
-				pageNum = new JSONObject(json);
+			pageNum = new JSONObject(json);
 			
 			if(null != pageNum){
 				
 				if(pageNum.has(Key_ErrorCode)){ // get error, failed to upload piece
+					
 					ret.error_code = pageNum.getInt(Key_ErrorCode);
 
 					if(pageNum.has(Key_ErrorMessage)){
+						
 						ret.message = pageNum.getString(Key_ErrorMessage);
 					}
-				}
-			 else{ // success, we need to parse the parameters
+				}else{ 
+					// success, we need to parse the parameters
 					ret.error_code = 0;
 
 					if(pageNum.has(Key_Action_Responese)){
@@ -94,16 +95,11 @@ class BaiduChannelActionBase {
 						}
 					}
 			 	}	
-			 }
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-			
-			
-		} catch (ParseException e) {
+				
+		} catch (JSONException e) {
 			// TODO Auto-generated catch block
-			ret.message = e.getMessage();
+			e.printStackTrace();
 		}
 		
 		return ret.pageNum;
@@ -140,8 +136,11 @@ class BaiduChannelActionBase {
 	 * parse json
 	 */
 	protected ChannelActionInfo.ChannelPPTInfoResponse parsePPTInfoByJson(String json){
+		
 		ChannelActionInfo.ChannelPPTInfoResponse ret = new ChannelActionInfo.ChannelPPTInfoResponse();
+		
 		if(null != json && json.length() > 0){
+			
 			try {
 				JSONObject jo = new JSONObject(json);
 				ret = parsePPTInfoByJSONObject(jo);
@@ -167,8 +166,8 @@ class BaiduChannelActionBase {
 						if(jo.has(Key_ErrorMessage)){
 							ret.message = jo.getString(Key_ErrorMessage);
 						}
-					}
-				 else{ // success, we need to parse the parameters
+					}else{ 
+						// success, we need to parse the parameters
 						ret.error_code = 0;
 
 						if(jo.has(Key_PPTID)){

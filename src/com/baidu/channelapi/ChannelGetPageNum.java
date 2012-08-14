@@ -17,8 +17,6 @@ public class ChannelGetPageNum extends BaiduChannelActionBase{
 	
 	//
 	//getpagenum
-	// @ by:  time   name   size
-	// @ order : asc dsc
 	//
 	public String getPageNum(String id){
 		

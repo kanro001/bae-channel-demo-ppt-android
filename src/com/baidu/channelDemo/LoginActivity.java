@@ -16,18 +16,18 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 /**
- * 登录。
+ * login
  */
 public class LoginActivity extends Activity {
 
     /** log tag. */
     private static final String TAG = LoginActivity.class.getSimpleName();
-    /** 用来登录的WebiView */
+    /*WebView */
     private WebView mWebView;
 
-    /** 授权跳转地址 */
+    /** redirect url */
     private static final String REDIRECT = "oob";
-    /** 开发者中心地址 */
+    /** developer center */
     static final String DEV_CENTER = "https://openapi.baidu.com/";
 
     @Override
@@ -44,7 +44,7 @@ public class LoginActivity extends Activity {
     }
 
     /**
-     * 获取 access token。
+     * get access token。
      */
     private void getAccessToken() {
         String url = DEV_CENTER + "oauth/2.0/authorize?" 
@@ -59,7 +59,7 @@ public class LoginActivity extends Activity {
     }
 
     /**
-     * 初始化Webview，设置WebviewClient
+     * Init Webview，Set WebviewClient
      * @param webview webview
      */
     private void initWebView(WebView webview) {
@@ -70,7 +70,7 @@ public class LoginActivity extends Activity {
 
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                handler.proceed(); // 提示框不显示，直接
+                handler.proceed(); 
             }
 
             @Override
@@ -86,20 +86,20 @@ public class LoginActivity extends Activity {
 
                     Log.d(TAG, "Redirect Url:" + url);
 
-                    // change # -> ? 方便获取参数
+                    // change # -> ? get params
                     int fragmentIndex = url.indexOf("#");
                     url = "http://localhost/?" + url.substring(fragmentIndex + 1);
 
-                    // 解析URL参数，获取Access token
+                    // Get Access token
                     String accessToken = Uri.parse(url).getQueryParameter("access_token");
                     Log.d(TAG, ">>> Get Original AccessToken: \r\n" + accessToken);
 
-                    // 保存
+                    // Save AccessToken
                     writeAccessToken(LoginActivity.this, accessToken);
 
 //                    Toast.makeText(LoginActivity.this, "get access token success", Toast.LENGTH_SHORT).show();
                     
-                    // 通知登录成功
+                    // Login Successful
                     Intent intent = new Intent();
                     intent.setClass(LoginActivity.this, PPTListActivity.class);
                     startActivity(intent);
@@ -124,9 +124,8 @@ public class LoginActivity extends Activity {
     }
 
     /**
-     * 回退。
+     * back
      * 
-     * @return 如果当前页面能回退，则返回true，否则返回false。
      * */
     private boolean goBack() {
         WebView webView = mWebView;
@@ -139,13 +138,12 @@ public class LoginActivity extends Activity {
         return false;
     }
 
-    /** Token存储的SP文件名 */
+    /** Save  Token */
     private static final String SHARED_PRE_FILE_NAME = "token";
-    /** AccessToken存储的Key */
+
     private static final String KEY_ACCESS_TOKEN = "access_token";
 
     /**
-     * 保存 access token到本地。
      * 
      * @param context Context
      * @param token access token
@@ -158,10 +156,9 @@ public class LoginActivity extends Activity {
     }
 
     /**
-     * 获取保存的access token。
+     *	get access token。
      * 
      * @param context Context
-     * @return 未加密的AccessToken
      */
     public static void getAccessToken(Context context) {
 //        String accessToken = null;

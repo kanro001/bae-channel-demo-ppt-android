@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -21,7 +22,14 @@ import android.widget.Toast;
 public class PPTListActivity extends ListActivity {
     /** Called when the activity is first created. */
     
-	public Handler uiThreadHandler = new Handler(); 
+	public Handler uiThreadHandler = new Handler();
+	
+	private int pptListNum = 0;
+	
+	final private int limit = 6;
+	
+	private Button pptListPerv = null;
+	private Button pptListNext = null;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,12 +37,65 @@ public class PPTListActivity extends ListActivity {
         setContentView(R.layout.pptlist);
         
         LoginActivity.getAccessToken(getApplicationContext());
+            
+        list(String.valueOf(pptListNum),String.valueOf(limit));
+               
+        pptListPerv = (Button)findViewById(R.id.list_perv);
+        pptListNext = (Button)findViewById(R.id.list_next);
         
-        list();
+        pptListPerv.setEnabled(false);
+        
+        if(BaseInfo.pptNum < (limit*(pptListNum+1))){
+        	      	
+        	pptListNext.setEnabled(false);
+        }
+        
+        pptListPerv.setOnClickListener(new Button.OnClickListener(){
+
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+				pptListNext.setEnabled(true);
+				
+				if(pptListNum >= 0){
+					
+					list(String.valueOf(pptListNum-1),String.valueOf(limit));
+					
+					pptListNum = pptListNum - 1;
+					
+					if(pptListNum == 0){
+						
+						pptListPerv.setEnabled(false);
+						
+					}
+				}
+				
+			}
+   	
+        });
+        
+        pptListNext.setOnClickListener(new Button.OnClickListener(){
+
+ 			public void onClick(View v) {
+ 				// TODO Auto-generated method stub
+				
+ 				pptListPerv.setEnabled(true);
+ 				
+ 				list(String.valueOf(pptListNum + 1),String.valueOf(limit));
+				
+ 				pptListNum = pptListNum + 1; 
+				
+				if(BaseInfo.pptNum <= (limit*(pptListNum+1)) && BaseInfo.pptNum > ((limit-1)*(pptListNum+1))){
+					
+					pptListNext.setEnabled(false);					
+				}
+ 			}
+    	
+         });
         
    }
 
-   public void list(){
+   public void list(final String page, final String limit){
 	   	   
 	   
        if (null != BaseInfo.access_token){
@@ -47,7 +108,10 @@ public class PPTListActivity extends ListActivity {
 		    		api.setAccessToken(BaseInfo.access_token );		    		
 		    		
 		    		//Use list api
-		    		final PPTListInfoResponse listResponse = api.get_list("0","20");
+		    		final PPTListInfoResponse listResponse = api.get_list(page,limit);
+		    		
+		    		BaseInfo.pptNum = listResponse.pptNum;
+		    		
 		    		if(listResponse.error_code == 0){
 		    			
 		    			uiThreadHandler.post(new Runnable(){
@@ -123,7 +187,6 @@ public class PPTListActivity extends ListActivity {
    	 
    	 startActivity(intent);
    	 
-   	 finish();
    
    }
     

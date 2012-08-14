@@ -73,13 +73,13 @@ public class BaiduChannelAPI {
 	public void setAccessToken(String token){
 		mbAccessToken = token;
 	}
+	
 	//get access_token
 	public String getAccessToken(){
 		
 		return mbAccessToken;
 	}
 	
-
 	// record the access token
 	private String mbAccessToken = null;
 }

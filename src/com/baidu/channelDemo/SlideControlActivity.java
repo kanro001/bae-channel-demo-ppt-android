@@ -50,7 +50,7 @@ public class SlideControlActivity extends Activity implements OnTouchListener, O
     } 
 	
 	
-	public void perv(){
+	public void pagePerv(){
 		
 		Thread workThread = new Thread(new Runnable(){
    			
@@ -67,25 +67,7 @@ public class SlideControlActivity extends Activity implements OnTouchListener, O
 		
 	}
 	
-	public void jump(){
-		
-		Thread workThread = new Thread(new Runnable(){
-   			
-			public void run() {
-		
-				BaiduChannelAPI jump = new BaiduChannelAPI();
-				
-				jump.setAccessToken(BaseInfo.access_token);
-				
-				BaseInfo.currentPage  = jump.jump(BaseInfo.pptId, String.valueOf(BaseInfo.currentPage));	
-			}
-		});
-		
-		workThread.start();
-		
-	}
-	
-	public void next(){
+	public void pageNext(){
 		
 		Thread workThread = new Thread(new Runnable(){
    			
@@ -110,8 +92,8 @@ public class SlideControlActivity extends Activity implements OnTouchListener, O
 
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,  
 	        float velocityY) {  
-	    if (e1.getX() - e2.getX() > 120) {//如果是从右向左滑动  
-	     //注册flipper的进出效果  
+	    if (e1.getX() - e2.getX() > 120) {
+	    	//form right to left   
 	        this.flipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.left_in));  
 	        this.flipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.left_out));
 	        if((index+1) <= BaseInfo.pageNum){
@@ -119,13 +101,14 @@ public class SlideControlActivity extends Activity implements OnTouchListener, O
 	        	this.flipper.showNext(); 
 	        	index = index + 1;
 		        flipper.removeViewAt(0);
-	        	next();
+	        	pageNext();
 	        }else{
 	        	Toast.makeText(getApplicationContext(), "最后一页", Toast.LENGTH_SHORT).show();
 	        }
 	        
 	        return true;  
-	    } else if (e1.getX() - e2.getX() < -120) {//如果是从左向右滑动  
+	    } else if (e1.getX() - e2.getX() < -120) {
+	    	//from left to right 
 	        this.flipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.right_in));  
 	        this.flipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.right_out));  
 	        if((index-1) >= 1){
@@ -133,7 +116,7 @@ public class SlideControlActivity extends Activity implements OnTouchListener, O
 		        this.flipper.showPrevious();
 		        index = index - 1;
 		        flipper.removeViewAt(0);
-		        perv();		        
+		        pagePerv();		        
 	        }else{
 	        	Toast.makeText(getApplicationContext(), "已是第一页", Toast.LENGTH_SHORT).show();
 	        }
