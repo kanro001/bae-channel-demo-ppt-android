@@ -56,6 +56,8 @@ public class ChannelList extends BaiduChannelActionBase{
 					
 					ret = parseListResponse(strResult);
 		        	
+					int a;
+					a= 10;
 		        }
 		        		        
 			} catch (ClientProtocolException e) {

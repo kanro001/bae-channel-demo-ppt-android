@@ -226,7 +226,7 @@ public class PageControlActivity extends Activity{
 								
 				int num = Integer.parseInt(jumpPageNum.getText().toString())-1;
 									
-				BaseInfo.currentPage  = jump.jump(BaseInfo.pptId, String.valueOf(num)) - 1;	
+				BaseInfo.currentPage  = jump.jump(BaseInfo.pptId, String.valueOf(num));	
 					
 				pageNum = BaseInfo.currentPage + 1;
 				

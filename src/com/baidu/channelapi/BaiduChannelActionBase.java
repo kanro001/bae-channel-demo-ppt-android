@@ -68,8 +68,12 @@ class BaiduChannelActionBase {
 		JSONObject pageNum;
 			
 		try {
+			
+			String jsonString = json;
+			
+			jsonString = jsonString.substring(jsonString.indexOf("{"));
 				
-			pageNum = new JSONObject(json);
+			pageNum = new JSONObject(jsonString);
 			
 			if(null != pageNum){
 				
@@ -142,8 +146,15 @@ class BaiduChannelActionBase {
 		if(null != json && json.length() > 0){
 			
 			try {
-				JSONObject jo = new JSONObject(json);
+				
+				String jsonString = json;
+				
+				jsonString = jsonString.substring(jsonString.indexOf("{"));
+				
+				JSONObject jo = new JSONObject(jsonString);
+				
 				ret = parsePPTInfoByJSONObject(jo);
+				
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				ret.message = e.getMessage();
@@ -203,6 +214,11 @@ class BaiduChannelActionBase {
 		if(null != response){
 			try {
 				String json = EntityUtils.toString(response.getEntity());
+				
+				String jsonString = json;
+				
+				jsonString = jsonString.substring(jsonString.indexOf("{"));
+				
 				JSONObject jo = new JSONObject(json);
 
 				if(null != jo){
@@ -240,7 +256,11 @@ class BaiduChannelActionBase {
 		if(null != json){
 			try {
 
-				JSONObject jo = new JSONObject(json);
+				String jsonString = json;
+				
+				jsonString = jsonString.substring(jsonString.indexOf("{"));
+				
+				JSONObject jo = new JSONObject(jsonString);
 
 				if(null != jo){
 					if(jo.has(Key_ErrorCode)){ // get error, failed to upload piece
@@ -294,8 +314,12 @@ class BaiduChannelActionBase {
 		
 		if(null != json){
 			try {
-
-				JSONObject jo = new JSONObject(json);
+				
+				String jsonString = json;
+				
+				jsonString = jsonString.substring(jsonString.indexOf("{"));
+				
+				JSONObject jo = new JSONObject(jsonString);
 
 				if(null != jo){
 					if(jo.has(Key_ErrorCode)){ // get error, failed to upload piece
@@ -351,7 +375,7 @@ class BaiduChannelActionBase {
 	}
 	
 	// the request url
-	final static String ChannelRequestUrl = "http://innerslide.offline.bae.baidu.com/rest/2.0/slideshow/slideshow";
+	final static String ChannelRequestUrl = "http://slideshow.duapp.com/rest/2.0/slideshow/slideshow";
 	
 	// the key of method
 	final static String Key_Method = "method";
@@ -371,7 +395,7 @@ class BaiduChannelActionBase {
 	
 	
 	// key 
-	final static String Key_PPTID = "slide_id";
+	final static String Key_PPTID = "ppt_id";
 	
 	// key 
 	final static String Key_PPTNAME = "ppt_name";

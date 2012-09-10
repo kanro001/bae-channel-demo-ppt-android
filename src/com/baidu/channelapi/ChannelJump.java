@@ -69,7 +69,7 @@ public class ChannelJump extends BaiduChannelActionBase{
 	private final static String Value_Method = "jump";
 	
 	// key 
-	private final static String Key_slide_id = "slide_id";
+	private final static String Key_slide_id = "ppt_id";
 	
 	private final static String Key_dest_page = "dest_page";
 	

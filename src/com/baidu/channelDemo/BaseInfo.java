@@ -3,12 +3,25 @@ package com.baidu.channelDemo;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 public class BaseInfo {
+	
+	
+	public static boolean isOnline(Context content) {
+	    ConnectivityManager connMgr = (ConnectivityManager) 
+	            content.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+	    return (networkInfo != null && networkInfo.isConnected());
+	} 
+	
 	
 	public static String fileTitle = null;
 	
     /** 应用注册后的 api_key. */
-    public static final String app_key = "mtFeWi82RqAV2QgGZe3cgq4O";
+    public static final String app_key = "GkWwrvZrCaMQfCZ190ujndZm";
     
     public static String access_token = null;
     

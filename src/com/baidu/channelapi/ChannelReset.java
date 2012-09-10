@@ -65,7 +65,7 @@ public class ChannelReset extends BaiduChannelActionBase{
 	private final static String Value_Method = "reset";
 	
 	// key 
-	private final static String Key_slide_id = "slide_id";
+	private final static String Key_slide_id = "ppt_id";
 	
 
 }

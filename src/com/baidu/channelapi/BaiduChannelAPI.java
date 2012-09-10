@@ -14,7 +14,7 @@ public class BaiduChannelAPI {
 		
 		ChannelList list = new ChannelList();
 		
-		list.getAccessToken();
+		list.setAccessToken(getAccessToken());
 				
 		return list.get_list(page, limit);
 	}
@@ -24,7 +24,7 @@ public class BaiduChannelAPI {
 		
 		ChannelGetPageNum pageNum = new ChannelGetPageNum();
 		
-		pageNum.getAccessToken();
+		pageNum.setAccessToken(getAccessToken());
 						
 		return Integer.parseInt(pageNum.getPageNum(pptID));
 	}
@@ -34,7 +34,7 @@ public class BaiduChannelAPI {
 		
 		ChannelPervious perv = new ChannelPervious();
 		
-		perv.getAccessToken();
+		perv.setAccessToken(getAccessToken());
 		
 		return perv.perviuous(pptID, curPageNum);
 	}
@@ -43,7 +43,7 @@ public class BaiduChannelAPI {
 	public int next(String pptID,String curPageNum){
 		ChannelNext next = new ChannelNext();
 		
-		next.getAccessToken();
+		next.setAccessToken(getAccessToken());
 		
 		return next.next(pptID, curPageNum);		
 	}
@@ -51,11 +51,11 @@ public class BaiduChannelAPI {
 	//jump api
 	public int jump(String pptID,String dest_page){
 		
-		ChannelNext jump = new ChannelNext();
+		ChannelJump jump = new ChannelJump();
 		
-		jump.getAccessToken();
+		jump.setAccessToken(getAccessToken());
 		
-		return jump.next(pptID, dest_page);		
+		return jump.jump(pptID, dest_page);		
 	}
 	
 	//rest api
@@ -63,7 +63,7 @@ public class BaiduChannelAPI {
 		
 		ChannelReset pptReset = new ChannelReset();
 		
-		pptReset.getAccessToken();
+		pptReset.setAccessToken(getAccessToken());
 		
 		return pptReset.reset(pptID);
 		

@@ -35,8 +35,6 @@ public class PPTListActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pptlist);
-        
-        LoginActivity.getAccessToken(getApplicationContext());
             
         list(String.valueOf(pptListNum),String.valueOf(limit));
                

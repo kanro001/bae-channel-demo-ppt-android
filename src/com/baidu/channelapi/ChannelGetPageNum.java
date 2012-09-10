@@ -62,10 +62,10 @@ public class ChannelGetPageNum extends BaiduChannelActionBase{
 	}
 	
 	// value of method
-	private final static String Value_Method = "get_page_num";
+	private final static String Value_Method = "getPageNum";
 	
 	// key 
-	private final static String Key_slide_id = "slide_id";
+	private final static String Key_slide_id = "ppt_id";
 	
 
 }
